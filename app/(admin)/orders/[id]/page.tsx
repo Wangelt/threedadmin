@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { api, formatCurrency, formatDate } from "@/lib/api";
+import { api, formatCurrency, formatDate, getErrorMessage } from "@/lib/api";
 import { userLabel } from "@/lib/format";
 import type { Order, OrderStatus } from "@/lib/types";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { ErrorState, LoadingState } from "@/components/ui/States";
+import { useToast } from "@/components/ui/Toast";
 
 const ORDER_STATUSES: OrderStatus[] = [
   "pending",
@@ -24,6 +25,7 @@ const ORDER_STATUSES: OrderStatus[] = [
 
 export default function OrderDetailPage() {
   const params = useParams<{ id: string }>();
+  const { error: toastError } = useToast();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -53,7 +55,7 @@ export default function OrderDetailPage() {
           : ""
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load order");
+      setError(getErrorMessage(err, "Failed to load order"));
     } finally {
       setLoading(false);
     }
@@ -85,7 +87,9 @@ export default function OrderDetailPage() {
       setMessage("Order status updated.");
       setNote("");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Update failed");
+      const msg = getErrorMessage(err, "Update failed");
+      setError(msg);
+      toastError(msg);
     } finally {
       setSaving(false);
     }

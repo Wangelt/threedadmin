@@ -50,7 +50,7 @@ export function Topbar({ title }: Props) {
             <p className="text-[11px] capitalize text-muted">{scopeLabel(user)}</p>
           </div>
         </div>
-        <button type="button" className="btn btn-secondary" onClick={logout}>
+        <button type="button" className="btn btn-secondary btn-pinned" onClick={logout}>
           <LogOut size={15} />
           <span className="hidden sm:inline">Sign out</span>
         </button>

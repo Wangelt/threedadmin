@@ -74,7 +74,7 @@ export default function LoginPage() {
       <div className="relative flex flex-1 items-center justify-center bg-[#f4f4f4] px-4 py-10">
         <form
           onSubmit={onSubmit}
-          className="w-full max-w-md border border-[#e5e5e5] bg-white p-8 shadow-[6px_6px_0_#0a0a0a]"
+          className="w-full max-w-md border border-[#e5e5e5] bg-white p-8"
         >
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
             ThreedUs

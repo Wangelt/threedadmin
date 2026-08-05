@@ -13,13 +13,14 @@ import { Thumb } from "@/components/ui/Thumb";
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [q, setQ] = useState("");
+  const [appliedQ, setAppliedQ] = useState("");
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState("");
 
-  async function load(nextPage = page, query = q) {
+  async function load(nextPage = page, query = appliedQ) {
     setLoading(true);
     setError("");
     try {
@@ -36,9 +37,20 @@ export default function ProductsPage() {
   }
 
   useEffect(() => {
-    load();
+    const trimmed = q.trim();
+    const timer = window.setTimeout(() => {
+      if (trimmed.length > 0 && trimmed.length < 3) return;
+      const next = trimmed.length >= 3 ? trimmed : "";
+      setPage(1);
+      setAppliedQ(next);
+    }, 500);
+    return () => window.clearTimeout(timer);
+  }, [q]);
+
+  useEffect(() => {
+    load(page, appliedQ);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+  }, [page, appliedQ]);
 
   async function deactivate(id: string) {
     if (!confirm("Deactivate this product?")) return;
@@ -65,24 +77,14 @@ export default function ProductsPage() {
         }
       />
 
-      <form
-        className="mb-4 flex flex-wrap gap-2"
-        onSubmit={(e) => {
-          e.preventDefault();
-          setPage(1);
-          load(1, q);
-        }}
-      >
+      <div className="mb-4">
         <input
-          className="field max-w-md"
+          className="field !h-9 max-w-md !py-0 text-sm"
           placeholder="Search products…"
           value={q}
           onChange={(e) => setQ(e.target.value)}
         />
-        <button type="submit" className="btn btn-secondary">
-          Search
-        </button>
-      </form>
+      </div>
 
       {loading ? <LoadingState /> : null}
       {error ? <ErrorState message={error} /> : null}

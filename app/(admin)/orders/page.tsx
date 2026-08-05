@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { api, formatCurrency, formatDate } from "@/lib/api";
+import { useRouter } from "next/navigation";
+import { api, formatCurrency, formatDate, getErrorMessage } from "@/lib/api";
 import { getUser, isSuperAdminRole } from "@/lib/auth";
 import { userLabel } from "@/lib/format";
 import type {
@@ -17,6 +17,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { ErrorState, LoadingState } from "@/components/ui/States";
 import { ThumbStack } from "@/components/ui/Thumb";
+import { useToast } from "@/components/ui/Toast";
 
 const ORDER_STATUSES: OrderStatus[] = [
   "pending",
@@ -39,6 +40,8 @@ function orderLocationLabel(order: Order) {
 }
 
 export default function OrdersPage() {
+  const router = useRouter();
+  const { error: toastError } = useToast();
   const [isSuper] = useState(() => isSuperAdminRole(getUser()?.role));
   const [orders, setOrders] = useState<Order[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
@@ -49,6 +52,20 @@ export default function OrdersPage() {
   const [locationId, setLocationId] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [openingId, setOpeningId] = useState("");
+
+  async function openOrder(id: string) {
+    if (openingId) return;
+    setOpeningId(id);
+    try {
+      await api<{ order: Order }>(`/orders/${id}`);
+      router.push(`/orders/${id}`);
+    } catch (err) {
+      toastError(getErrorMessage(err, "Failed to load order"));
+    } finally {
+      setOpeningId("");
+    }
+  }
 
   useEffect(() => {
     if (!isSuper) return;
@@ -160,6 +177,7 @@ export default function OrdersPage() {
           <DataTable
             rows={orders}
             rowKey={(o) => o._id}
+            interactive
             columns={[
               {
                 key: "orderId",
@@ -171,12 +189,14 @@ export default function OrdersPage() {
                       size={40}
                       max={2}
                     />
-                    <Link
-                      href={`/orders/${o._id}`}
-                      className="font-semibold text-ink hover:underline"
+                    <button
+                      type="button"
+                      className="font-semibold text-ink hover:underline disabled:opacity-50"
+                      disabled={openingId === o._id}
+                      onClick={() => openOrder(o._id)}
                     >
-                      {o.orderId}
-                    </Link>
+                      {openingId === o._id ? "Opening…" : o.orderId}
+                    </button>
                   </div>
                 ),
               },

@@ -105,39 +105,6 @@ export default function EditProductInner() {
         }
       />
 
-      {product.images?.length ? (
-        <div className="card overflow-hidden">
-          <div className="border-b border-border px-5 py-3">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
-              Current photos
-            </p>
-          </div>
-          <div className="grid gap-0 sm:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={product.images[0]}
-              alt={product.title}
-              className="max-h-[320px] w-full bg-[#f4f4f4] object-contain"
-            />
-            <div className="grid grid-cols-2 gap-2 p-3">
-              {product.images.map((url) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={url}
-                  src={url}
-                  alt=""
-                  className="h-28 w-full border border-border object-cover"
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="card flex min-h-28 items-center justify-center px-5 text-sm text-muted">
-          No photos on this product yet — add them in the form below.
-        </div>
-      )}
-
       {message ? <p className="flash-ok mb-0 px-3 py-2 text-sm">{message}</p> : null}
 
       <div className="card p-5">

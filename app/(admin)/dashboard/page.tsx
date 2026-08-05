@@ -192,7 +192,7 @@ export default function DashboardPage() {
               <Link
                 key={p._id}
                 href={`/products/edit/${p._id}?slug=${encodeURIComponent(p.slug)}`}
-                className="group border border-border bg-white p-2 transition hover:border-black"
+                className="group border border-border bg-white p-2 shadow-[0_4px_16px_rgba(10,10,10,0.12)] transition-[transform,box-shadow] duration-1000 ease-in-out will-change-transform hover:-translate-y-1.5 hover:shadow-[0_10px_28px_rgba(10,10,10,0.26)]"
               >
                 {p.images?.[0] ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -281,7 +281,7 @@ export default function DashboardPage() {
               <Link
                 key={item.id}
                 href={item.href}
-                className="flex items-center justify-between gap-3 border border-border bg-white px-3 py-2.5 hover:border-black"
+                className="flex items-center justify-between gap-3 border border-border bg-white px-3 py-2.5 shadow-none transition-[transform,box-shadow,background-color] duration-200 ease-out hover:-translate-x-[3px] hover:-translate-y-[3px] hover:!bg-[#eeeeee] hover:shadow-[3px_3px_0_#0a0a0a]"
               >
                 <div className="flex min-w-0 items-center gap-3">
                   <Thumb src={item.image} alt="" size={42} rounded="none" />
