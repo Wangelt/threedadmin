@@ -77,7 +77,7 @@ export default function LoginPage() {
           className="w-full max-w-md border border-[#e5e5e5] bg-white p-8 shadow-[6px_6px_0_#0a0a0a]"
         >
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
-            3D Forge
+            ThreedUs
           </p>
           <h2 className="font-display mt-2 text-4xl text-ink">Sign in</h2>
           <p className="mt-2 text-sm text-muted">Ops access for admins only.</p>

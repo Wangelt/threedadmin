@@ -1,7 +1,7 @@
 import type { User } from "./types";
 
-const TOKEN_KEY = "forge_admin_token";
-const USER_KEY = "forge_admin_user";
+const TOKEN_KEY = "threedus_admin_token";
+const USER_KEY = "threedus_admin_user";
 
 export function getToken(): string | null {
   if (typeof window === "undefined") return null;

@@ -1,17 +1,16 @@
-# 3D Forge Admin
+# ThreedUs Admin
 
-Next.js admin panel for the 3D Forge API (`threednet`).
+Next.js admin panel for the ThreedUs API (`threednet`).
 
 ## Setup
 
 ```bash
-npm install
 cp .env.local.example .env.local
+npm install
 npm run dev
 ```
 
-App runs at [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000).
 
 Seed admin: `admin@3dforge.local` / `Admin12345!`
-
-Ensure the API CORS allowlist includes `http://localhost:3000` (already set in `threednet`).
+Seed super admin: `superadmin@3dforge.local` / `SuperAdmin12345!`

@@ -61,7 +61,7 @@ export function Sidebar({ collapsed, onToggle }: Props) {
       <div className="flex items-center justify-between gap-2 border-b border-white/10 px-3 py-4">
         {!collapsed && (
           <div className="min-w-0 pl-1">
-            <p className="font-display text-2xl leading-none text-white">3D Forge</p>
+            <p className="font-display text-2xl leading-none text-white">ThreedUs</p>
             <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#a3a3a3]">
               {isSuperAdminRole(user?.role) ? "Super desk" : "Ops desk"}
             </p>

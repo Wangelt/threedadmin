@@ -10,8 +10,8 @@ const onest = Onest({
 });
 
 export const metadata: Metadata = {
-  title: "3D Forge Ops",
-  description: "Operations console for 3D Forge",
+  title: "ThreedUs Ops",
+  description: "Operations console for ThreedUs",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
