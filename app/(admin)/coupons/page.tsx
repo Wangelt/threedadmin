@@ -1,12 +1,13 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { api, formatCurrency, formatDate } from "@/lib/api";
+import { api, formatCurrency, formatDate, getErrorMessage } from "@/lib/api";
 import type { Coupon } from "@/lib/types";
 import { DataTable } from "@/components/ui/DataTable";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { ErrorState, LoadingState } from "@/components/ui/States";
+import { useToast } from "@/components/ui/Toast";
 
 const emptyForm = {
   code: "",
@@ -22,6 +23,7 @@ const emptyForm = {
 };
 
 export default function CouponsPage() {
+  const { error: toastError } = useToast();
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -107,7 +109,7 @@ export default function CouponsPage() {
       await api(`/coupons/${id}`, { method: "DELETE" });
       await load();
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Delete failed");
+      toastError(getErrorMessage(err, "Delete failed"));
     }
   }
 

@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { api, formatDate } from "@/lib/api";
+import { api, formatDate, getErrorMessage } from "@/lib/api";
 import { userLabel } from "@/lib/format";
 import type { Pagination, Product, Review } from "@/lib/types";
 import { DataTable } from "@/components/ui/DataTable";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ErrorState, LoadingState } from "@/components/ui/States";
+import { useToast } from "@/components/ui/Toast";
 
 export default function ReviewsPage() {
+  const { error: toastError } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
   const [productId, setProductId] = useState("");
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -70,7 +72,7 @@ export default function ReviewsPage() {
       await api(`/reviews/${id}`, { method: "DELETE" });
       setReviews((prev) => prev.filter((r) => r._id !== id));
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to hide review");
+      toastError(getErrorMessage(err, "Failed to hide review"));
     } finally {
       setBusyId("");
     }

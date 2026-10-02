@@ -25,7 +25,7 @@ export function DataTable<T>({
   rows,
   rowKey,
   empty = "Nothing here yet.",
-  interactive = false,
+  interactive = true,
 }: Props<T>) {
   if (!rows.length) {
     return (

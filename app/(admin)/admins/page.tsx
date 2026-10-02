@@ -2,13 +2,14 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { api, formatDate } from "@/lib/api";
+import { api, formatDate, getErrorMessage } from "@/lib/api";
 import { getUser, isSuperAdminRole } from "@/lib/auth";
 import type { Location, Pagination, User } from "@/lib/types";
 import { DataTable } from "@/components/ui/DataTable";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { ErrorState, LoadingState } from "@/components/ui/States";
+import { useToast } from "@/components/ui/Toast";
 
 const emptyForm = {
   name: "",
@@ -25,6 +26,7 @@ function locationLabel(user: User) {
 
 export default function AdminsPage() {
   const router = useRouter();
+  const { error: toastError } = useToast();
   const [allowed, setAllowed] = useState(false);
   const [admins, setAdmins] = useState<User[]>([]);
   const [locations, setLocations] = useState<Location[]>([]);
@@ -142,7 +144,7 @@ export default function AdminsPage() {
       });
       await load();
     } catch (err) {
-      alert(err instanceof Error ? err.message : `${label} failed`);
+      toastError(getErrorMessage(err, `${label} failed`));
     }
   }
 

@@ -2,15 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { api, formatCurrency } from "@/lib/api";
+import { api, formatCurrency, getErrorMessage } from "@/lib/api";
 import type { Pagination, Product } from "@/lib/types";
 import { DataTable } from "@/components/ui/DataTable";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { ErrorState, LoadingState } from "@/components/ui/States";
 import { Thumb } from "@/components/ui/Thumb";
+import { useToast } from "@/components/ui/Toast";
 
 export default function ProductsPage() {
+  const { error: toastError } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
   const [q, setQ] = useState("");
   const [appliedQ, setAppliedQ] = useState("");
@@ -59,7 +61,7 @@ export default function ProductsPage() {
       await api(`/products/${id}`, { method: "DELETE" });
       await load();
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Delete failed");
+      toastError(getErrorMessage(err, "Delete failed"));
     } finally {
       setBusyId("");
     }

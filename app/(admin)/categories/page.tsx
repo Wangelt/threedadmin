@@ -1,13 +1,14 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { api } from "@/lib/api";
+import { api, getErrorMessage } from "@/lib/api";
 import type { Category } from "@/lib/types";
 import { DataTable } from "@/components/ui/DataTable";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { ErrorState, LoadingState } from "@/components/ui/States";
 import { Thumb } from "@/components/ui/Thumb";
+import { useToast } from "@/components/ui/Toast";
 
 const emptyForm = {
   name: "",
@@ -18,6 +19,7 @@ const emptyForm = {
 };
 
 export default function CategoriesPage() {
+  const { error: toastError } = useToast();
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -92,7 +94,7 @@ export default function CategoriesPage() {
       await api(`/categories/${id}`, { method: "DELETE" });
       await load();
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Delete failed");
+      toastError(getErrorMessage(err, "Delete failed"));
     }
   }
 
